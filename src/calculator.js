@@ -14,6 +14,19 @@ class Calculator {
     this.inputText = ''; // 입력 문자열
   }
 
+  // 문자열 연산
+  calculate() {
+    this.parseCustomDelimiter();
+
+    const numbers = this.parseNumber();
+    return this.sum(numbers);
+  }
+
+  // 배열의 숫자들을 더한 후 반환
+  sum(numbers) {
+    return numbers.reduce((acc, cur) => acc + cur, 0);
+  }
+
   // 문자열 길이 반환
   size() {
     return this.inputText.length;
