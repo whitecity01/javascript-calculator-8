@@ -1,3 +1,5 @@
+export const DEFAULT_DELIMITERS = [',', ':']; // 기본 구분자
+
 export const INPUT_MESSAGE = '덧셈할 문자열을 입력해 주세요.\n';
 export const OUTPUT_PREFIX = '결과 : ';
 
