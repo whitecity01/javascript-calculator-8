@@ -2,6 +2,7 @@ import { Console } from '@woowacourse/mission-utils';
 import {
   DEFAULT_DELIMITERS,
   ERROR_INVALID_FORMAT,
+  ERROR_NON_POSITIVE,
   INPUT_MESSAGE,
   OUTPUT_PREFIX,
 } from './constants.js';
@@ -33,7 +34,7 @@ class Calculator {
   }
 
   // delimiterList(구분자)로 문자열의 숫자를 파싱해서 배열로 반환
-  // TODO: 예외 발생 시 애플리케이션 종료
+  // 예외 발생 시 애플리케이션이 종료된다.
   parseNumber() {
     const numbers = [0]; // 기본값 : 0
     let chunk = '';
@@ -52,14 +53,19 @@ class Calculator {
       if (i + 1 === this.size() || this.delimiterList.includes(c)) {
         const number = Number(chunk); // 형변환
 
-        // TODO: 잘못된 형식 에러 처리 예정
+        // 숫자가 아닐 경우
+        if (Number.isNaN(number)) throw new Error(ERROR_INVALID_FORMAT);
+
+        // 양수가 아닐 경우
+        if (number <= 0) throw new Error(ERROR_NON_POSITIVE);
 
         numbers.push(number);
         chunk = '';
         continue;
       }
 
-      // TODO: 숫자, 구분자 모두 아닐 경우 에러 처리 필요
+      // 숫자, 구분자 모두 아닐 경우
+      throw new Error(ERROR_INVALID_FORMAT);
     }
 
     return numbers; // 성공 시 분리된 숫자 배열을 반환
