@@ -5,6 +5,7 @@ import {
   INPUT_MESSAGE,
   OUTPUT_PREFIX,
 } from './constants.js';
+import { isNumberChar } from './utils.js';
 
 class Calculator {
   constructor() {
@@ -29,6 +30,39 @@ class Calculator {
 
     this.delimiterList.push(this.inputText[2]); // 커스텀 구분자 추가
     this.inputText = this.inputText.substring(5); // 커스텀 구분자 문자열 삭제
+  }
+
+  // delimiterList(구분자)로 문자열의 숫자를 파싱해서 배열로 반환
+  // TODO: 예외 발생 시 애플리케이션 종료
+  parseNumber() {
+    const numbers = [0]; // 기본값 : 0
+    let chunk = '';
+
+    for (let i = 0; i < this.size(); i++) {
+      const c = this.inputText[i];
+
+      // chunk에 숫자 추가
+      if (isNumberChar(c)) {
+        chunk += c;
+
+        if (i + 1 < this.size()) continue;
+      }
+
+      // 문자열의 마지막이나 구분자를 만날 경우
+      if (i + 1 === this.size() || this.delimiterList.includes(c)) {
+        const number = Number(chunk); // 형변환
+
+        // TODO: 잘못된 형식 에러 처리 예정
+
+        numbers.push(number);
+        chunk = '';
+        continue;
+      }
+
+      // TODO: 숫자, 구분자 모두 아닐 경우 에러 처리 필요
+    }
+
+    return numbers; // 성공 시 분리된 숫자 배열을 반환
   }
 
   // 문자열 입력
